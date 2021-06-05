@@ -18,16 +18,22 @@ I am sure there are hundreds of forks out there in the wild. It maybe time to re
 
 1. clone the repo
 
-`git clone https://github.com/nileio/docker-crm-erp`
+```
+git clone https://github.com/nileio/docker-crm-erp
+```
 
 2. change directory to the crm folder you wish to use
 3. run `docker build` . For example
 
-`docker build -t vtigercrm .`
+```
+docker build -t vtigercrm .
+```
 
 4. create a new container to run your image. for example
 
-`docker run --name vtigercrm -d -p 80:80 vtigercrm`
+```
+docker run --name vtigercrm -d -p 80:80 vtigercrm
+```
 
 the above runs the continaer on port 80
 
