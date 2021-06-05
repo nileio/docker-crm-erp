@@ -37,7 +37,7 @@ RUN mkdir -p /run/mysqld && \
     sed -i 's|.*skip-networking.*|skip-networking|g' /etc/mysql/my.cnf && \
     ln -s /usr/lib/libxml2.so.2 /usr/lib/libxml2.so
 
-#configure apache & php
+#configure apache
 RUN sed -i 's#AllowOverride None#AllowOverride All#' /etc/apache2/httpd.conf && \
     sed -i 's#ServerName www.example.com:80#\nServerName localhost:80#' /etc/apache2/httpd.conf && \
     sed -i 's#^DocumentRoot ".*#DocumentRoot "/www"#g' /etc/apache2/httpd.conf && \
@@ -56,7 +56,7 @@ RUN sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" /etc/php${PHP_V
     mkdir -p /run/apache2 && \
     mkdir -p /tmp/sessions && \
     chown -R apache:apache /run/apache2 /tmp/sessions
-   
+
 
 # create a start script for apache and mysql
 # it creates a db called db on mysql start

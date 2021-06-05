@@ -2,16 +2,16 @@
 FROM alpine:3.7 as builder
 
 RUN apk --no-cache add \
- gcc\
- libc-dev\
- autoconf\
- make\
- libssh2-dev\
- php5\
- php5-cli\
- php5-pear\
- php5-openssl\
- php5-dev
+    gcc\
+    libc-dev\
+    autoconf\
+    make\
+    libssh2-dev\
+    php5\
+    php5-cli\
+    php5-pear\
+    php5-openssl\
+    php5-dev
 
 RUN ln -s /usr/bin/php5 /usr/bin/php && \
     pecl channel-update pecl.php.net && \
@@ -45,7 +45,18 @@ RUN apk add --update --no-cache && apk upgrade && \
     php5-imap php5-iconv php5-imap php5-posix php5-pdo php5-ctype php5-pdo_mysql
 
 COPY --from=builder /usr/lib/php5/modules/ssh2.so /usr/lib/php5/modules/
-RUN echo "extension=ssh2.so" > /etc/php5/conf.d/ssh2.ini
+# add ssh and xdebug extensions.
+# change xdebug configuration as required below
+RUN echo "extension=ssh2.so" > /etc/php5/conf.d/ssh2.ini && \
+    echo "zend_extension=xdebug.so" >  /etc/php5/conf.d/xdebug.ini &&\
+    echo -e "\n[XDEBUG]"  >> /etc/php5/conf.d/xdebug.ini && \ 
+    echo "xdebug.remote_autostart=On" >> /etc/php5/conf.d/xdebug.ini && \ 
+    echo "xdebug.remote_host=host.docker.internal" >> /etc/php5/conf.d/xdebug.ini && \
+    echo "xdebug.remote_enable=1" >> /etc/php5/conf.d/xdebug.ini && \  
+    echo "xdebug.remote_connect_back=0" >> /etc/php5/conf.d/xdebug.ini && \ 
+    echo "xdebug.idekey=VSCODE" >> /etc/php5/conf.d/xdebug.ini && \
+    echo "xdebug.remote_log=\"/tmp/xdebug/xdebug.log\"" >> /etc/php5/conf.d/xdebug.ini
+
 
 RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     echo "${TIMEZONE}" > /etc/timezone
@@ -78,7 +89,7 @@ RUN sed -i 's#AllowOverride None#AllowOverride All#' /etc/apache2/httpd.conf && 
     mkdir -p /run/apache2 && \
     mkdir -p /tmp/sessions && \
     chown -R apache:apache /run/apache2 /tmp/sessions
-   
+
 
 # create a start script for apache and mysql
 # it creates a db called db on mysql start

@@ -6,10 +6,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 #defaults that can be modified using env vars
 ARG VTIGERVERSION=7.3.0
 ARG MYSQL_ROOT_PASSWORD="root"
-ARG MYSQL_VTIGERADM_PASSWORD="myStr0nGp@ss"
+ARG DBUSER_PASSWORD="myStr0nGp@ss"
+
 
 ENV VTIGERVERSION=${VTIGERVERSION}
-ENV MYSQL_ALLOW_EMPTY_PASSWORD='yes' MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD}" MYSQL_VTIGERADM_PASSWORD="${MYSQL_VTIGERADM_PASSWORD}"
+ENV MYSQL_ALLOW_EMPTY_PASSWORD='yes' MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD}" DBUSER_PASSWORD="${DBUSER_PASSWORD}"
 ENV PORT=80
 
 WORKDIR /tmp
@@ -44,7 +45,7 @@ RUN apt-get install -y mysql-server && \
 RUN (mysqld_safe &) && \
     mysqladmin --silent --wait=5 ping || exit 1 && \
     mysql -uroot -e "CREATE DATABASE vtiger DEFAULT CHARACTER SET utf8 default collate utf8_general_ci; \
-    CREATE USER vtigeradm@localhost IDENTIFIED WITH mysql_native_password BY '${MYSQL_VTIGERADM_PASSWORD}'; \
+    CREATE USER vtigeradm@localhost IDENTIFIED WITH mysql_native_password BY '${DBUSER_PASSWORD}'; \
     GRANT ALL PRIVILEGES on vtiger.* TO vtigeradm@localhost;flush privileges;"
 
 
