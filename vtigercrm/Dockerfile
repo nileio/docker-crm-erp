@@ -78,4 +78,4 @@ RUN chmod +x /usr/bin/start-services.sh
 CMD ["start-services.sh"]
 
 EXPOSE 80
-EXPOSE 443
+
