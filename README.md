@@ -35,11 +35,11 @@ docker build -t vtigercrm .
 docker run --name vtigercrm -d -p 80:80 vtigercrm
 ```
 
-the above runs the continaer on port 80
+the above runs the container on port 80
 
-Note: only port 80 is exposed, so it is purely for demo.
+Note: only port 80 is exposed, so this is insecure and purely for demo. will possibly add support for let's encrypt ssl.
 
-All passwords are listed at the top of each Dockerfile. The variables are mostly are :
+All passwords are listed at the top of each Dockerfile. The variables mostly are :
 
 ```
 MYSQLROOT_PASSWORD
